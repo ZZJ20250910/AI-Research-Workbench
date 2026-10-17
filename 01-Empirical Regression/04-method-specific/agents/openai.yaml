@@ -1,0 +1,4 @@
+interface:
+  display_name: "Method-Specific Checks"
+  short_description: "Run identification checks for the active method"
+  default_prompt: "Use $04-method-specific to run the identification diagnostics required by the active empirical method."

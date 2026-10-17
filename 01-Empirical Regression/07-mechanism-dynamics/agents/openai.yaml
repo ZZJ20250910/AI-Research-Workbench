@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mechanisms and Dynamics"
+  short_description: "Run mechanism, dynamic, or counterfactual extensions"
+  default_prompt: "Use $07-mechanism-dynamics to run the selected mechanism, dynamic-response, or structural extension."

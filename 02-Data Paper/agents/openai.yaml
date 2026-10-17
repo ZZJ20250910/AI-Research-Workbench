@@ -1,0 +1,4 @@
+interface:
+  display_name: "Data Paper"
+  short_description: "将实证论文及审稿意见整理为可直接接手研究的完整中文导读"
+  default_prompt: "Read the supplied empirical paper and, when present, its reviewer reports, then produce a complete Chinese Markdown guide."

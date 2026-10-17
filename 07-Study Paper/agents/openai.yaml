@@ -1,0 +1,4 @@
+interface:
+  display_name: "Study Paper"
+  short_description: "Create a faithful paragraph-by-paragraph paper map"
+  default_prompt: "Use $study-paper to create a faithful paragraph-by-paragraph Markdown map of this paper."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Baseline Estimation"
+  short_description: "Run the selected method's baseline estimation"
+  default_prompt: "Use $02-baseline to run and report the baseline estimation for the active empirical method."

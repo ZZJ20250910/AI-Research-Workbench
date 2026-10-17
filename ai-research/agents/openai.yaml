@@ -1,0 +1,7 @@
+interface:
+  display_name: "AIresearch"
+  short_description: "Open and route local research workflow packages"
+  default_prompt: "Use $ai-research to open my local research workflow menu."
+
+policy:
+  allow_implicit_invocation: false

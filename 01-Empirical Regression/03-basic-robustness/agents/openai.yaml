@@ -1,0 +1,4 @@
+interface:
+  display_name: "Basic Robustness"
+  short_description: "Run general diagnostics and basic robustness checks"
+  default_prompt: "Use $03-basic-robustness to run the selected general diagnostics and basic robustness checks."

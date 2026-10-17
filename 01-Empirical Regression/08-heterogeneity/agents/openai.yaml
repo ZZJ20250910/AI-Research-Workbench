@@ -1,0 +1,4 @@
+interface:
+  display_name: "Heterogeneity and Distribution"
+  short_description: "Run heterogeneity and distributional-effect analyses"
+  default_prompt: "Use $08-heterogeneity to run the selected heterogeneity or distributional-effect analysis."

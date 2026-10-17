@@ -1,0 +1,154 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{paper-slides}[2026/09/26 Configurable academic Beamer theme]
+\RequirePackage{iftex}
+\ifPDFTeX
+  \PackageError{paper-slides}{This template requires XeLaTeX}{Use --engine xelatex so Constantia and the separate digit font are applied.}
+\else
+  \ifXeTeX\else
+    \PackageError{paper-slides}{This template requires XeLaTeX}{Use --engine xelatex.}
+  \fi
+  \RequirePackage{fontspec}
+  \RequirePackage{mathspec}
+  \IfFontExistsTF{\LatinFontName}{}{\PackageError{paper-slides}{Font \LatinFontName\space is unavailable}{Install the configured text font or choose an available replacement in config.tex.}}
+  \IfFontExistsTF{\DigitFontName}{}{\PackageError{paper-slides}{Font \DigitFontName\space is unavailable}{Install the configured digit font or choose an available replacement in config.tex.}}
+  \setmainfont{\LatinFontName}
+  \setsansfont{\LatinFontName}
+  \newfontfamily\SlideDigits{\DigitFontName}
+  \newXeTeXintercharclass\SlideDigitClass
+  \XeTeXcharclass`0=\SlideDigitClass
+  \XeTeXcharclass`1=\SlideDigitClass
+  \XeTeXcharclass`2=\SlideDigitClass
+  \XeTeXcharclass`3=\SlideDigitClass
+  \XeTeXcharclass`4=\SlideDigitClass
+  \XeTeXcharclass`5=\SlideDigitClass
+  \XeTeXcharclass`6=\SlideDigitClass
+  \XeTeXcharclass`7=\SlideDigitClass
+  \XeTeXcharclass`8=\SlideDigitClass
+  \XeTeXcharclass`9=\SlideDigitClass
+  \XeTeXinterchartoks 0 \SlideDigitClass={\begingroup\SlideDigits}
+  \XeTeXinterchartoks \SlideDigitClass 0={\endgroup}
+  \XeTeXinterchartoks 4095 \SlideDigitClass={\begingroup\SlideDigits}
+  \XeTeXinterchartoks \SlideDigitClass 4095={\endgroup}
+  \XeTeXinterchartokenstate=1
+  \setmathsfont(Digits){\DigitFontName}
+  \setmathsfont(Latin,Greek){\LatinFontName}
+\fi
+\ifChineseSlides
+  \RequirePackage{xeCJK}
+  % Fandol has no declared OpenType script; avoid requesting a script tag.
+  \newcommand{\PaperFandolName}{fandol}
+  \ifx\CJKFontSet\PaperFandolName
+    \defaultCJKfontfeatures{}
+  \fi
+  \edef\PaperCtexOptions{UTF8,fontset=\CJKFontSet}
+  \expandafter\PassOptionsToPackage\expandafter{\PaperCtexOptions}{ctex}
+  \RequirePackage{ctex}
+  \renewcommand{\CJKfamilydefault}{\CJKsfdefault}
+\fi
+\RequirePackage{amsmath,amssymb,booktabs,array,pifont,graphicx,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\graphicspath{{figures/}{./}}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\newcommand{\progressdot}[1]{%
+  \tikz[baseline=-0.65ex]{%
+    \ifnum#1<\insertframenumber
+      \fill[SlideBlue] (0,0) circle[radius=0.42ex];%
+    \else\ifnum#1=\insertframenumber
+      \fill[SlideRed] (0,0) circle[radius=0.50ex];%
+    \else
+      \fill[white] (0,0) circle[radius=0.42ex];%
+      \draw[SlideGray!75,line width=0.60pt] (0,0) circle[radius=0.42ex];%
+    \fi\fi
+  }%
+}
+\newcommand{\progressgroup}[4]{%
+  \begin{minipage}[b]{#4\paperwidth}\centering
+    {\fontsize{5.4}{5.9}\selectfont\color{SlideGray}#1\par}%
+    \vspace{0.15ex}%
+    \foreach \n in {#2,...,#3}{\makebox[0.95em][c]{\progressdot{\n}}}%
+  \end{minipage}%
+}
+\setbeamertemplate{headline}{%
+  \vspace{0.25ex}%
+  \hbox to \paperwidth{\hfil
+    \progressgroup{\ProgressLabelOne}{\ProgressOneStart}{\ProgressOneEnd}{0.225}%
+    \progressgroup{\ProgressLabelTwo}{\ProgressTwoStart}{\ProgressTwoEnd}{0.265}%
+    \progressgroup{\ProgressLabelThree}{\ProgressThreeStart}{\ProgressThreeEnd}{0.190}%
+    \progressgroup{\ProgressLabelFour}{\ProgressFourStart}{\ProgressFourEnd}{0.190}%
+    \progressgroup{\ProgressLabelFive}{\ProgressFiveStart}{\ProgressFiveEnd}{0.110}%
+  \hfil}%
+  \vspace{1.20em}%
+}
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=SlideInk,bg=white}
+\setbeamercolor{structure}{fg=SlideBlue}
+\setbeamercolor{frametitle}{fg=SlideBlue}
+\setbeamercolor{block title}{bg=SlideBlue,fg=white}
+\setbeamercolor{block body}{bg=SlideLight!45,fg=SlideInk}
+\setbeamercolor{itemize item}{fg=SlideBlue}
+\setbeamercolor{itemize subitem}{fg=SlideRed}
+\setbeamertemplate{itemize item}{\small\raisebox{0.3pt}{\textbullet}}
+\setbeamertemplate{itemize subitem}{\scriptsize\raisebox{0.3pt}{\textendash}}
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \begin{beamercolorbox}[wd=\textwidth,sep=0pt,dp=0pt]{frametitle}%
+    {\raggedright\color{SlideBlue}\bfseries\fontsize{16}{18}\selectfont\strut\insertframetitle\strut\par}%
+    \vspace{-0.45em}%
+    {\color{SlideBlue}\rule{\textwidth}{1pt}}\par%
+    \ifx\insertframesubtitle\empty\else
+      \vspace{2pt}{\small\color{SlideGray}\insertframesubtitle\par}%
+    \fi
+  \end{beamercolorbox}%
+  \vspace{2pt}%
+}
+\setbeamertemplate{footline}{%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.82\paperwidth,ht=2.6ex,dp=1.3ex,leftskip=1.3em]{}%
+      {\scriptsize\color{SlideGray}\insertshorttitle}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.18\paperwidth,ht=2.6ex,dp=1.3ex,rightskip=1.3em]{}%
+      \hfill{\scriptsize\color{SlideGray}\insertframenumber\,/\,\inserttotalframenumber}%
+    \end{beamercolorbox}%
+  }\vskip2pt%
+}
+\setbeamertemplate{title page}{%
+  \begin{center}
+    {\small\color{SlideGray}\TalkType\par}\vspace{0.6em}
+    {\color{SlideBlue}\bfseries\fontsize{21}{25}\selectfont\inserttitle\par}\vspace{0.35em}
+    {\color{SlideBlueDark}\large\insertsubtitle\par}\vspace{0.4em}
+    {\color{SlideRed}\rule{0.4\textwidth}{1.4pt}\par}\vspace{0.65em}
+    {\small\insertauthor\par}\vspace{0.35em}
+    {\small\color{SlideBlue}\Presenter\par}\vspace{0.35em}
+    {\footnotesize\insertinstitute\par}\vspace{0.35em}
+    {\scriptsize\color{SlideGray}\Contact\par}
+    {\scriptsize\color{SlideGray}\insertdate\par}
+  \end{center}
+}
+\newcommand{\kw}[1]{\textbf{\textcolor{SlideBlue}{#1}}}
+\newcommand{\positiveeffect}[1]{\textbf{\textcolor{SlideGreen}{#1}}}
+\newcommand{\negativeeffect}[1]{\textbf{\textcolor{SlideRed}{#1}}}
+\newcommand{\nonsignificant}[1]{\textcolor{SlideInk}{#1}}
+\newcommand{\diagnostic}[1]{\textbf{\textcolor{SlideBlue}{#1}}}
+\newcommand{\varname}[1]{\text{\normalfont #1}}
+\newcommand{\good}[1]{\positiveeffect{#1}} % Backward-compatible alias.
+\newcommand{\hot}[1]{\negativeeffect{#1}} % Do not use for neutral emphasis.
+\providecommand{\cmark}{\textcolor{SlideGreen}{\ding{51}}}
+\providecommand{\xmark}{\textcolor{SlideRed}{\ding{55}}}
+\newcommand{\takeaway}[1]{\framesubtitle{#1}}
+\newcommand{\roadmapentry}[3]{%
+  \noindent\begin{minipage}[c]{0.09\textwidth}
+    {\color{SlideRed}\bfseries\fontsize{17}{18}\selectfont #1}
+  \end{minipage}%
+  \begin{minipage}[c]{0.88\textwidth}
+    {\color{SlideBlue}\bfseries\large #2\par}%
+    \vspace{0.10em}{\color{SlideGray}\small #3\par}%
+  \end{minipage}\par\vspace{0.55em}%
+}
+\newcommand{\sectionpagecontent}[3]{%
+  \centering
+  {\color{SlideRed}\bfseries\large PART #1\par}\vspace{0.9em}
+  {\color{SlideBlue}\bfseries\fontsize{24}{29}\selectfont #2\par}\vspace{0.8em}
+  {\color{SlideGray}\large #3\par}
+}

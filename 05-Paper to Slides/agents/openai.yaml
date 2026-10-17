@@ -1,0 +1,7 @@
+interface:
+  display_name: "Paper to Slides"
+  short_description: "Faithful research-paper talks with slides and scripts"
+  default_prompt: "Use $paper-to-slides to turn this paper and its appendices into a faithful 10-minute research presentation with LaTeX source, a PDF, and a timed speaker script."
+
+policy:
+  allow_implicit_invocation: false

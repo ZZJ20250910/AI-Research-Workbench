@@ -1,0 +1,4 @@
+interface:
+  display_name: "Alternative Identification"
+  short_description: "Run an authorized alternative identification design"
+  default_prompt: "Use $06-alternative-identification to run the authorized endogeneity or alternative-identification design."

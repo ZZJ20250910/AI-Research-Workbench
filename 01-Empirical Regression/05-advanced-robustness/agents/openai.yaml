@@ -1,0 +1,4 @@
+interface:
+  display_name: "Advanced Robustness"
+  short_description: "Run advanced robustness and sensitivity analyses"
+  default_prompt: "Use $05-advanced-robustness to run the selected method-appropriate sensitivity analyses."

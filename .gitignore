@@ -1,0 +1,14 @@
+# Workbench scratch space and local runtime artifacts
+/Temp/
+**/__pycache__/
+**/.pytest_cache/
+*.py[cod]
+
+# Operating-system metadata
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local statistical-session state
+.Rhistory
+.RData
