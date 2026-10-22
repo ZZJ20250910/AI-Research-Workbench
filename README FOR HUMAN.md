@@ -1,5 +1,7 @@
 # AI Research Workbench
 
+> 自用科研 AI Skill 存档。这里集中保存本人日常使用、持续适配和改进的科研工作流；部分能力包参考或改编自公开项目，原项目、作者与许可证见下文“参考与改进来源”。
+
 ## 这是什么
 
 AI Research Workbench 是一套可自行查看、修改和迁移的科研 AI 工作流集合。它把不同科研任务分别放在独立能力包中，同时只对外提供一个统一入口：
@@ -61,6 +63,28 @@ AI Research Workbench 是一套可自行查看、修改和迁移的科研 AI 工
 
 后续增加的编号能力包遵循同样的入口和按需加载规则。
 
+## 参考与改进来源
+
+本 Workbench 并非所有内容均从零开始。下列公开项目曾作为流程设计参考，或被纳入后继续进行本地化适配和功能扩展：
+
+### 实证研究框架参考
+
+`01-Empirical Regression` 在重构方法分流、阶段组织、代码模板和机器可读结果时，参考过以下项目的公开设计。当前实证包已经按照本 Workbench 的“统一阶段、项目状态、Stata执行器和直接执行模式”重新组织，并非这些仓库的镜像或官方衍生版本。
+
+- [brycewang-stanford/Auto-Empirical-Research-Skills](https://github.com/brycewang-stanford/Auto-Empirical-Research-Skills)
+- [brycewang-stanford/StatsPAI](https://github.com/brycewang-stanford/StatsPAI)
+- [brycewang-stanford/Awesome-Journal-Skills](https://github.com/brycewang-stanford/Awesome-Journal-Skills)
+- [brycewang-stanford/AER-Skills](https://github.com/brycewang-stanford/AER-Skills)
+- [brycewang-stanford/Auto-Research-Skills](https://github.com/brycewang-stanford/Auto-Research-Skills)
+
+### 纳入后适配的能力包
+
+- `04-Defensive Writing Revision`：保留原项目中的作者、共创者与MIT许可证信息，详见该目录的 [`README.md`](04-Defensive%20Writing%20Revision/README.md) 和 [`LICENSE`](04-Defensive%20Writing%20Revision/LICENSE)。
+- `05-Paper to Slides`：基于 [yigengjiang/paper-to-slides](https://github.com/yigengjiang/paper-to-slides) 继续适配经济学实证展示、统一入口和本 Workbench 的安装结构；详见其 [`LICENSE`](05-Paper%20to%20Slides/LICENSE) 与 [`THIRD_PARTY_NOTICES.md`](05-Paper%20to%20Slides/THIRD_PARTY_NOTICES.md)。
+- `06-Econ Reference Matcher`：基于 [mimaowang/econ-reference-matcher](https://github.com/mimaowang/econ-reference-matcher) 纳入统一入口并做本地使用适配；详见其 [`LICENSE`](06-Econ%20Reference%20Matcher/LICENSE)、[`NOTICE.md`](06-Econ%20Reference%20Matcher/NOTICE.md) 与 [`ACKNOWLEDGEMENTS.md`](06-Econ%20Reference%20Matcher/ACKNOWLEDGEMENTS.md)。
+
+各编号能力包保留各自的版权与许可证。根目录未单独声明许可证的内容不因仓库公开而自动获得开源许可；引用、修改或再分发时，应分别查看对应目录的说明和许可证。
+
 ## 文件夹如何工作
 
 ```text
@@ -73,6 +97,7 @@ AI Research Workbench/
 ├── 05-Paper to Slides/              论文转 LaTeX 学术演示能力包
 ├── 06-Econ Reference Matcher/       经管论文引用匹配与证据核验能力包
 ├── 07-Study Paper/                   论文逐段定位与忠实压缩能力包
+├── GitHub私有分发与更新方案.md       私有分发与只读更新说明
 ├── README FOR HUMAN.md             本说明
 └── README FOR AI.md                整包安装说明入口
 ```

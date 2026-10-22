@@ -17,7 +17,15 @@ $resolvedDo = (Resolve-Path -LiteralPath $DoFile).Path
 $workingDirectory = [IO.Path]::GetDirectoryName($resolvedDo)
 $fileName = [IO.Path]::GetFileName($resolvedDo)
 $logFile = [IO.Path]::ChangeExtension($resolvedDo, '.log')
-$doText = [IO.File]::ReadAllText($resolvedDo)
+$utf8NoBom = New-Object Text.UTF8Encoding($false, $true)
+try {
+    $doText = [IO.File]::ReadAllText($resolvedDo, $utf8NoBom)
+}
+catch {
+    throw 'The do-file is not valid UTF-8. Save it as UTF-8 without BOM before running.'
+}
+$sourceBytes = [IO.File]::ReadAllBytes($resolvedDo)
+$hasUtf8Bom = $sourceBytes.Length -ge 3 -and $sourceBytes[0] -eq 239 -and $sourceBytes[1] -eq 187 -and $sourceBytes[2] -eq 191
 
 $activeLines = @(
     $doText -split "`r?`n" |
@@ -33,17 +41,17 @@ if ($logConflict) {
     throw 'The do-file contains log using/log close. Logs are managed exclusively by run-stata.ps1; remove those commands before running.'
 }
 
-# Stata 17 on this Windows host expects the active ANSI code page for Chinese text
-# and can misdecode both UTF-8 (with or without BOM) and non-ASCII do-file names.
-# Keep the original working directory so relative project paths remain unchanged.
-$compatibilityMode = ($resolvedDo -match '[^\x00-\x7F]') -or ($doText -match '[^\x00-\x7F]')
+# Stata 17 on this host correctly reads Chinese paths and identifiers from UTF-8
+# without BOM. Use an ASCII temporary filename when normalization is needed, but
+# never transcode the do-file to the Windows ANSI/GBK code page.
+$compatibilityMode = $hasUtf8Bom -or ($resolvedDo -match '[^\x00-\x7F]') -or ($doText -match '[^\x00-\x7F]')
 $executionDo = $resolvedDo
 $executionLog = $logFile
 if ($compatibilityMode) {
     $compatBase = 'codexstata_' + [Guid]::NewGuid().ToString('N')
     $executionDo = [IO.Path]::Combine($workingDirectory, $compatBase + '.do')
     $executionLog = [IO.Path]::ChangeExtension($executionDo, '.log')
-    [IO.File]::WriteAllText($executionDo, $doText, [Text.Encoding]::Default)
+    [IO.File]::WriteAllText($executionDo, $doText, $utf8NoBom)
     $fileName = [IO.Path]::GetFileName($executionDo)
 }
 
@@ -122,7 +130,7 @@ $logText = ''
 if ($logExists) {
     $logItem = Get-Item -LiteralPath $logFile
     $logIsCurrent = $logItem.LastWriteTime -ge $startedAt.AddSeconds(-2)
-    $logText = Get-Content -LiteralPath $logFile -Raw
+    $logText = Get-Content -LiteralPath $logFile -Raw -Encoding UTF8
 }
 
 $complete = $logIsCurrent -and $logText.Contains('CODEX_STATA_COMPLETE=1')
@@ -183,7 +191,7 @@ $summary = [ordered]@{
     status = $status
     do_file = $resolvedDo
     compatibility_mode = $compatibilityMode
-    compatibility_strategy = if ($compatibilityMode) { 'ascii-name-system-codepage-copy-in-original-directory' } else { 'none' }
+    compatibility_strategy = if ($compatibilityMode) { 'ascii-name-utf8-no-bom-copy-in-original-directory' } else { 'none' }
     stata_exe = $StataExe
     process_id = $process.Id
     started_at = $startedAt.ToString('o')
